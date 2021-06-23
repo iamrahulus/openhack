@@ -1,37 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: trips-deployment
+  name: poi-deployment
   namespace: api
   labels:
-    app: trips-deployment
+    app: poi-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: trips
+      app: poi
   template:
     metadata:
       labels:
-        app: trips
+        app: poi
     spec:
       containers:
-      - name: trips
-        image: openhackacr.azurecr.io/tripinsights/trips:1.0
+      - name: poi
+        image: openhackacr.azurecr.io/tripinsights/poi:1.0
         volumeMounts:
         - name: config-vol
           mountPath: /secrets
         env:
         - name: SQL_PASSWORD
-          valueFrom: 
+          valueFrom:
             configMapKeyRef:
               name: oh-config-map-api
               key: SQL_PASSWORD
         - name: SQL_SERVER
-          valueFrom: 
+          valueFrom:
             configMapKeyRef:
               name: oh-config-map-api
-              key: SQL_SERVER         
+              key: SQL_SERVER
         ports:
         - containerPort: 80
       volumes:
@@ -42,16 +42,16 @@ spec:
           volumeAttributes:
             secretProviderClass: oh-secrets
           nodePublishSecretRef:                       # Only required when using service principal mode
-            name: secrets-store-creds  
+            name: secrets-store-creds
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: trips-service
+  name: poi-service
 spec:
   type: ClusterIP
   selector:
-   app: trips
+   app: poi
   ports:
     - targetPort: 80
       port: 80

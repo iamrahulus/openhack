@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oh-config-map-api
+  namespace: api
+data:
+  # property-like keys; each key maps to a simple value
+  # SQL_PASSWORD: "Adm1nPassw0rd"
+  SQL_SERVER: "oh-sql.database.windows.net"
